@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pigafetta Chronicles | Spanish-Philippine Colonial Archives</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. GLOBAL STYLES & COLONIAL PALETTE
+       ========================================================================== */
+    :root {
+      --gold-accent: #d4af37;
+      --gold-hover: #f3e5ab;
+      --deep-mahogany: #2b1810;
+      --parchment-bg: #f4ecd8;
+      --parchment-card: #eae0d0;
+      --text-dark: #2a2421;
+      --terracotta: #9e3d23;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Lora', serif;
+      background-color: var(--deep-mahogany);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ==========================================================================
+       2. BACKGROUND GIF, VIGNETTE & DUST PARTICLES
+       ========================================================================== */
+    .bg-gif {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/spanish-empire-boat.gif');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.22;
+      z-index: -3;
+      filter: sepia(0.6) contrast(1.1);
+    }
+
+    .vignette-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(43,24,16,0.2) 40%, rgba(20,10,5,0.95) 100%);
+      z-index: -2;
+      pointer-events: none;
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+    }
+
+    #dust-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       3. TYPOGRAPHY & HEADER
+       ========================================================================== */
+    header {
+      text-align: center;
+      padding: 60px 20px 30px;
+      position: relative;
+    }
+
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      letter-spacing: 4px;
+      color: var(--gold-accent);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      color: #f4ecd8;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.9), 0 0 20px rgba(212,175,55,0.3);
+      margin-bottom: 15px;
+    }
+
+    .header-divider {
+      width: 150px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+      margin: 0 auto 20px;
+    }
+
+    .intro-lead {
+      max-width: 750px;
+      margin: 0 auto;
+      color: #dfd5c6;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      font-style: italic;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    }
+
+    /* ==========================================================================
+       4. MAIN CONTAINER & INTERACTIVE CARDS
+       ========================================================================== */
+    main {
+      max-width: 1100px;
+      margin: 40px auto 80px;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-accent);
+      font-size: 1.6rem;
+      margin: 40px 0 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(212,175,55,0.3);
+      padding-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .archive-card {
+      background: linear-gradient(145deg, #f4ecd8, #e0d4be);
+      border: 2px solid var(--gold-accent);
+      border-radius: 4px;
+      padding: 25px;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7), inset 0 0 15px rgba(158,61,35,0.15);
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      overflow: hidden;
+    }
+
+    .archive-card::before {
+      content: '';
+      position: absolute;
+      top: 5px; left: 5px; right: 5px; bottom: 5px;
+      border: 1px solid rgba(43,24,16,0.2);
+      pointer-events: none;
+    }
+
+    .archive-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(212,175,55,0.3), inset 0 0 20px rgba(212,175,55,0.2);
+      border-color: var(--gold-hover);
+    }
+
+    .card-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--terracotta);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      color: var(--deep-mahogany);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .card-snippet {
+      font-size: 0.92rem;
+      color: #4a3e3d;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      margin-top: 18px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      color: var(--terracotta);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ==========================================================================
+       5. MODAL (PARCHMENT OVERLAY)
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(15, 8, 5, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #f4ecd8;
+      background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0);
+      background-size: 16px 16px;
+      border: 3px solid var(--gold-accent);
+      max-width: 850px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 40px;
+      border-radius: 4px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 40px rgba(158,61,35,0.12);
+      position: relative;
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.4s ease;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: var(--deep-mahogany);
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+      color: var(--terracotta);
+    }
+
+    .modal-header {
+      border-bottom: 2px dashed rgba(158,61,35,0.3);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+
+    .modal-subtitle {
+      font-family: 'Cinzel', serif;
+      color: var(--terracotta);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .modal-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: var(--deep-mahogany);
+      margin-top: 5px;
+    }
+
+    .modal-body {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-dark);
+    }
+
+    .modal-body p {
+      margin-bottom: 15px;
+    }
+
+    .modal-body ul {
+      margin: 15px 0 20px 25px;
+    }
+
+    .modal-body li {
+      margin-bottom: 10px;
+    }
+
+    /* Gallery Grid inside Modal */
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 25px;
+      border-top: 1px solid rgba(43,24,16,0.15);
+      padding-top: 20px;
+    }
+
+    .gallery-img-container {
+      border: 2px solid var(--gold-accent);
+      border-radius: 3px;
+      overflow: hidden;
+      background: #2b1810;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+
+    .gallery-img-container:hover {
+      transform: scale(1.03);
+    }
+
+    .gallery-img-container img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+      filter: sepia(0.2) contrast(1.05);
+    }
+
+    .gallery-link {
+      display: block;
+      padding: 8px;
+      background: #eae0d0;
+      font-size: 0.75rem;
+      color: var(--deep-mahogany);
+      text-decoration: none;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-top: 1px solid var(--gold-accent);
+    }
+
+    .gallery-link:hover {
+      background: var(--gold-accent);
+      color: #fff;
+    }
+
+    /* Source Link Button */
+    .source-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: var(--terracotta);
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: background 0.3s;
+    }
+
+    .source-btn:hover {
+      background: var(--deep-mahogany);
+    }
+
+    /* ==========================================================================
+       6. FOOTER
+       ========================================================================== */
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #a89f91;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      border-top: 1px solid rgba(212,175,55,0.2);
+      background: rgba(15, 8, 5, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-gif"></div>
+  <div class="vignette-overlay"></div>
+  <canvas id="dust-canvas"></canvas>
+
+  <header>
+    <div class="subtitle">Philippine Colonial History Archive</div>
+    <h1>The Pigafetta Chronicles</h1>
+    <div class="header-divider"></div>
+    <p class="intro-lead">
+      An interactive exploration into Antonio Pigafetta's 1521 journal—analyzing the geographic, cultural, and strategic nuances of early Spanish-Filipino contact.
+    </p>
+  </header>
+
+  <main>
+    <h2 class="section-title">Part I: Geographic & Environmental Record</h2>
+    <div class="grid-container">
+      
+      <div class="archive-card" onclick="openModal('modal-a1')">
+        <span class="card-tag">Guide A • Primary Log</span>
+        <h3 class="card-title">Pigafetta as the Fleet’s Surveyor</h3>
+        <p class="card-snippet">Pigafetta acted as the expedition's on-the-ground surveyor—a "trip log" recording coastlines, resources, and landmarks at Homonhon...</p>
+        <div class="card-footer">Inspect Record &rarr;</div>
+      </div>
+
+      <div class="archive-card" onclick="openModal('modal-b1')">
+        <span class="card-tag">Guide B • Pre-Colonial Snapshot</span>
+        <h3 class="card-title">The 1521 Archipelago Landscape</h3>
+        <p class="card-snippet">Functioning like an early geographic survey from Homonhon to Limasawa and Cebu, offering a pristine snapshot before centuries of colonization...</p>
+        <div class="card-footer">Inspect Record &rarr;</div>
+      </div>
+
+      <div class="archive-card" onclick="openModal('modal-c1')">
+        <span class="card-tag">Guide C • Historical Value</span>
+        <h3 class="card-title">Validation of Pre-Colonial Geography</h3>
+        <p class="card-snippet">In 1982, modern researchers used Pigafetta's written notes to relocate the exact freshwater springs lost for over 450 years...</p>
+        <div class="card-footer">Inspect Record &rarr;</div>
+      </div>
+
+    </div>
+
+    <h2 class="section-title">Part II: First Contact & Political Dynamics</h2>
+    <div class="grid-container">
+
+      <div class="archive-card" onclick="openModal('modal-a2')">
+        <span class="card-tag">Guide A • Encounter Timeline</span>
+        <h3 class="card-title">Chronology of First Encounters</h3>
+        <p class="card-snippet">From sighting Leyte Gulf on March 16, 1521, to gift exchanges, naming the islands, mock battles, and the blood compact with Rajah Kolambu...</p>
+        <div class="card-footer">Inspect Record &rarr;</div>
+      </div>
+
+      <div class="archive-card" onclick="openModal('modal-b2')">
+        <span class="card-tag">Guide B • Political Networks</span>
+        <h3 class="card-title">Inter-Island Chiefdoms & Alliances</h3>
+        <p class="card-snippet">Reveals a pre-colonial society with connected polities (Kolambu & Awi) paired with Spanish soft-power tactics like mock battles...</p>
+        <div class="card-footer">Inspect Record &rarr;</div>
+      </div>
+
+      <div class="archive-card" onclick="openModal('modal-c2')">
+        <span class="card-tag">Guide C • Colonial Strategy</span>
+        <h3 class="card-title">Deconstructing Engineered Peace</h3>
+        <p class="card-snippet">How Pigafetta's detailed record lets historians decode Spanish "friendliness" as a calculated strategy of early colonization...</p>
+        <div class="card-footer">Inspect Record &rarr;</div>
+      </div>
+
+    </div>
+
+    <h2 class="section-title">Part III: Archival Reference</h2>
+    <div class="grid-container" style="grid-template-columns: 1fr;">
+      <div class="archive-card" onclick="openModal('modal-source')">
+        <span class="card-tag">Guide D • Primary Reference</span>
+        <h3 class="card-title">Source Credentials & Reference Material</h3>
+        <p class="card-snippet">Dr. Danilo Madrid Gerona — "Magellan: The World of the Visayas" (Dateline Ibalon). Researched across 10 years in Spanish and Portuguese archives...</p>
+        <div class="card-footer">Inspect Source Credentials &rarr;</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="modal-a1">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('modal-a1')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-subtitle">Guide Question A • Environmental Survey</span>
+        <h2 class="modal-title">Pigafetta’s Contribution as Expedition Surveyor</h2>
+      </div>
+      <div class="modal-body">
+        <p>Pigafetta acted as the expedition's on-the-ground surveyor — think of him as the "trip log" or GPS tracker of the voyage. As the fleet moved from island to island, he wrote down exactly what they found: coastlines, distances, landmarks, and resources.</p>
+        <p>At Homonhon specifically, he recorded finding:</p>
+        <ul>
+          <li><strong>Two freshwater springs</strong> (named the "Watering Place of Good Signs")</li>
+          <li>Traces of natural gold and white coral</li>
+          <li>Large fruit-bearing trees resembling pine</li>
+          <li>Both good and bad varieties of palm trees</li>
+        </ul>
+        <p>He didn't just note "there's an island here" — he described what it offered, which mattered a lot to a starving, scurvy-ridden crew looking for water, food, and wealth.</p>
+
+        <div class="image-gallery">
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20Diary%20%E2%80%93%20The%20Philippine%20Islands%2C%201493%20%E2%80%93%20PFPLCP%20(1).png" alt="Pigafetta Diary 1">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20Diary%20%E2%80%93%20The%20Philippine%20Islands%2C%201493%20%E2%80%93%20PFPLCP%20(1).png" target="_blank" class="gallery-link">View Archival Artifact 1</a>
+          </div>
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20Diary%20%E2%80%93%20The%20Philippine%20Islands%2C%201493%20%E2%80%93%20PFPLCP.png" alt="Pigafetta Diary 2">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20Diary%20%E2%80%93%20The%20Philippine%20Islands%2C%201493%20%E2%80%93%20PFPLCP.png" target="_blank" class="gallery-link">View Archival Artifact 2</a>
+          </div>
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20_%20PDF.png" alt="Pigafetta PDF Document">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20_%20PDF.png" target="_blank" class="gallery-link">View PDF Document Link</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-b1">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('modal-b1')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-subtitle">Guide Question B • Physical Geography</span>
+        <h2 class="modal-title">Insights into Pre-Colonial Environment</h2>
+      </div>
+      <div class="modal-body">
+        <p>His notes function like an early geographic and resource survey of the archipelago — sailing from <strong>Homonhon &rarr; Limasawa &rarr; Cebu</strong>, he mapped out not just where places were but what was there: water sources, gold deposits, native vegetation, and terrain.</p>
+        <p>This gives modern readers a snapshot of what the islands physically looked like in 1521, before centuries of colonization, deforestation, and urban development reshaped the landscape. It's essentially a "before" photo of the Philippines' natural environment.</p>
+
+        <div class="image-gallery">
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Homonhon%20Island_%20A%20journey%20through%20history%20and%20nature%20in%20Eastern%20Samar.png" alt="Homonhon Island History">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Homonhon%20Island_%20A%20journey%20through%20history%20and%20nature%20in%20Eastern%20Samar.png" target="_blank" class="gallery-link">Homonhon Island Record</a>
+          </div>
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/EASTERN%20SAMAR%20__%20HOMONHON%20ISLAND%20_%20HANDIG%20BEACH%20-%20YouTube.png" alt="Handig Beach Homonhon">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/EASTERN%20SAMAR%20__%20HOMONHON%20ISLAND%20_%20HANDIG%20BEACH%20-%20YouTube.png" target="_blank" class="gallery-link">Handig Beach Reference</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-c1">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('modal-c1')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-subtitle">Guide Question C • Cartography & Research</span>
+        <h2 class="modal-title">Importance to Modern Historians & Geographers</h2>
+      </div>
+      <div class="modal-body">
+        <p>Historians and geographers still cross-reference his descriptions with real locations today. A striking example: in <strong>1982</strong>, researchers used his written descriptions to actually locate and confirm the exact freshwater springs he described at Homonhon — findings that had been "lost" to history for over 450 years until his account led people back to the spot.</p>
+        <p>Without his geography notes, mapmakers reconstructing Magellan's route, or historians trying to understand the pre-colonial Philippine environment, would have almost no primary-source material to work with — it would be guesswork.</p>
+
+        <div class="image-gallery">
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Punta%20Arenas_%20following%20the%20Ferdinand%20Magellan%20route.png" alt="Magellan Route Map">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Punta%20Arenas_%20following%20the%20Ferdinand%20Magellan%20route.png" target="_blank" class="gallery-link">Magellan Route Reference</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-a2">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('modal-a2')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-subtitle">Guide Question A • Sequence of Events</span>
+        <h2 class="modal-title">Daily Record of First Contact Sequence</h2>
+      </div>
+      <div class="modal-body">
+        <p>A detailed, near-daily record of the first contact sequence — who was involved, what was exchanged, and how each encounter was staged. Key details from his account:</p>
+        <ul>
+          <li><strong>March 16, 1521:</strong> Fleet sights Leyte Gulf, lands on the uninhabited island of Homonhon for safety and to tend to crew dying of scurvy.</li>
+          <li><strong>March 17, 1521:</strong> Natives arrive by boat; Magellan gives gifts (caps, mirrors, combs) in a calculated show of friendliness.</li>
+          <li>Islands are named "Archipelago of San Lazaro" after the feast day they arrived on — without asking locals what they already called the place.</li>
+          <li>After a week, they move to Limasawa. Magellan stages a mock battle between armored soldiers — a subtle intimidation display — before assuring the chief, Rajah Kolambu, of his friendship.</li>
+          <li>A <strong>blood compact</strong> is sealed between Magellan and Kolambu. Present is Kolambu's brother Awi, chief of Butuan and owner of gold mines — revealing an existing regional network of allied chiefdoms.</li>
+        </ul>
+
+        <div class="image-gallery">
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/27%20Avril%201521%20%E2%80%93%20Fernand%20de%20Magellan%20navigateur%20et%20explorateur%20portugais_.png" alt="Magellan Encounter">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/27%20Avril%201521%20%E2%80%93%20Fernand%20de%20Magellan%20navigateur%20et%20explorateur%20portugais_.png" target="_blank" class="gallery-link">Magellan Portrait & Route</a>
+          </div>
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Juan%20Luna%20-%20Paintings%20Collection.png" alt="Juan Luna Collection">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Juan%20Luna%20-%20Paintings%20Collection.png" target="_blank" class="gallery-link">Juan Luna Painting Collection</a>
+          </div>
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Magellan%20toasts%20with%20Humabon%20_%20Philippine%20history%20pre%20spanish%20period_.png" alt="Magellan & Humabon">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Magellan%20toasts%20with%20Humabon%20_%20Philippine%20history%20pre%20spanish%20period_.png" target="_blank" class="gallery-link">Magellan & Humabon Toast</a>
+          </div>
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/What%20Material%20Used%20In%20Blood%20Compact%20Sculpture%20at%20Nicholas%20Rojas%20blog.png" alt="Blood Compact Sculpture">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/What%20Material%20Used%20In%20Blood%20Compact%20Sculpture%20at%20Nicholas%20Rojas%20blog.png" target="_blank" class="gallery-link">Blood Compact Sculpture</a>
+          </div>
+        </div>
+        <p style="margin-top: 15px; font-size: 0.85rem;"><a href="http://digitalcollections.nypl.org/items/a08a94f0-c584-012f-c475-58d385a7bc34?canvasIndex=0" target="_blank" style="color: var(--terracotta);">NYPL Digital Collections Manuscript Canvas Link &rarr;</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-b2">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('modal-b2')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-subtitle">Guide Question B • Society & Politics</span>
+        <h2 class="modal-title">Pre-Colonial Governance & Soft Power Dynamics</h2>
+      </div>
+      <div class="modal-body">
+        <p>It shows a pre-colonial society with an active political network — chiefs like Kolambu and Awi governed separate territories but were connected through family and trade (gold mining, in Awi's case).</p>
+        <p>It also exposes the dual nature of the "friendly" first encounter: genuine hospitality on the Filipino side, paired with a calculated soft-power strategy on the Spanish side (gift-giving and an intimidating mock battle, used together).</p>
+
+        <div class="image-gallery">
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Cebu%20(Sugbu).png" alt="Cebu Sugbu History">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Cebu%20(Sugbu).png" target="_blank" class="gallery-link">Sugbu Map & History</a>
+          </div>
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Sugbu%20Chinese%20Heritage%20Museum%20History%20And%20Relevance%20_%20CebuInsights.png" alt="Sugbu Heritage Museum">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Sugbu%20Chinese%20Heritage%20Museum%20History%20And%20Relevance%20_%20CebuInsights.png" target="_blank" class="gallery-link">Sugbu Heritage Insights</a>
+          </div>
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Datu%20-%20Alchetron%2C%20The%20Free%20Social%20Encyclopedia.png" alt="Datu Social Hierarchy">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Datu%20-%20Alchetron%2C%20The%20Free%20Social%20Encyclopedia.png" target="_blank" class="gallery-link">Pre-Colonial Datu System</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-c2">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('modal-c2')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-subtitle">Guide Question C • Colonial Analysis</span>
+        <h2 class="modal-title">Analyzing Early Colonial Tactics</h2>
+      </div>
+      <div class="modal-body">
+        <p>This account lets historians analyze colonial tactics, not just events. Pigafetta's record — combined with MindaNews's own critical framing — highlights how "friendliness" was a deliberate strategy of early colonizers, distinct from more aggressive approaches used elsewhere.</p>
+        <p>Without this level of narrative detail, we'd only know that the two sides met peacefully — not how that peace was engineered, or the power dynamics underneath it.</p>
+
+        <div class="image-gallery">
+          <div class="gallery-img-container">
+            <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Why%20Filipinos%20Should%20Read_%20%E2%80%98To%20Be%20Poor%20and%20Obscure_%20The%20Spiritual_.png" alt="Critical Historical Reading">
+            <a href="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Why%20Filipinos%20Should%20Read_%20%E2%80%98To%20Be%20Poor%20and%20Obscure_%20The%20Spiritual_.png" target="_blank" class="gallery-link">Critical History Reading</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-source">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('modal-source')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-subtitle">Guide Question D • Reference</span>
+        <h2 class="modal-title">Primary Reference & Credentialed Source</h2>
+      </div>
+      <div class="modal-body">
+        <p><strong>Primary Citation:</strong></p>
+        <p>Danilo Madrid Gerona, <em>"Magellan: The World of the Visayas,"</em> dateline-ibalon.com</p>
+        <p><strong>Author Background & Credibility:</strong></p>
+        <p>Dr. Danilo Madrid Gerona is a credentialed Filipino historian (PhD, professor at Partido State University) whose comprehensive 500-page book on Magellan was meticulously researched over 10 years using primary Spanish and Portuguese archives.</p>
+        <a href="http://dateline-ibalon.com" target="_blank" class="source-btn">Visit Dateline Ibalon Source &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Modal Interactivity ---
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Close modal when clicking on the dark backdrop
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('active');
+        }
+      });
+    });
+
+    // --- Floating Parchment Dust Canvas Animation ---
+    const canvas = document.getElementById('dust-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let particlesArray = [];
+    const numberOfParticles = 45;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.speedY = -Math.random() * 0.5 - 0.2; // Slow upward float
+        this.opacity = Math.random() * 0.6 + 0.2;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        // Reset particle if it drifts off screen
+        if (this.y < 0) {
+          this.y = canvas.height + 10;
+          this.x = Math.random() * canvas.width;
+        }
+        if (this.x < 0 || this.x > canvas.width) {
+          this.x = Math.random() * canvas.width;
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particlesArray.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
+  </script>
+</body>
+</html>
