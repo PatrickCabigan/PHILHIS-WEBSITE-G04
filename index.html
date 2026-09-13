@@ -11,14 +11,13 @@
 
   <style>
     /* ==========================================================================
-       1. GLOBAL STYLES & COLONIAL PALETTE
+       1. GLOBAL STYLES & PALETTE
        ========================================================================== */
     :root {
       --gold-accent: #d4af37;
       --gold-hover: #f3e5ab;
-      --deep-mahogany: #1c0f0a;
+      --deep-mahogany: #120907;
       --parchment-bg: #f4ecd8;
-      --parchment-card: #eae0d0;
       --text-dark: #2a2421;
       --terracotta: #9e3d23;
     }
@@ -38,7 +37,7 @@
       position: relative;
     }
 
-    /* Ambient Dust Canvas */
+    /* Ambient Particles Canvas */
     #dust-canvas {
       position: fixed;
       top: 0; left: 0;
@@ -47,15 +46,14 @@
       pointer-events: none;
     }
 
-    /* Old Map Vignette & Overlay */
+    /* Old Map Vignette */
     .vignette-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: radial-gradient(circle, rgba(28,15,10,0.3) 30%, rgba(10,5,3,0.95) 100%);
+      background: radial-gradient(circle, rgba(18,9,7,0.4) 20%, rgba(5,2,1,0.95) 100%);
       z-index: -1;
       pointer-events: none;
-      box-shadow: inset 0 0 120px rgba(0,0,0,0.9);
     }
 
     /* ==========================================================================
@@ -65,13 +63,14 @@
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      z-index: 500;
+      z-index: 999;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       padding: 20px;
+      background-color: var(--deep-mahogany);
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
@@ -79,6 +78,7 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      display: none !important;
     }
 
     .cover-bg {
@@ -88,14 +88,9 @@
       background-image: url('https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/philippines-philippine.gif');
       background-size: cover;
       background-position: center;
-      opacity: 0.35;
+      opacity: 0.4;
       filter: sepia(0.5) contrast(1.1);
       z-index: -2;
-    }
-
-    .cover-title-group {
-      margin-bottom: 25px;
-      animation: fadeInDown 1.2s ease;
     }
 
     .cover-subtitle {
@@ -118,56 +113,56 @@
       text-shadow: 3px 3px 12px rgba(0,0,0,0.95), 0 0 25px rgba(212,175,55,0.4);
     }
 
-    /* Floating Galleon Boat Interactive Button */
+    /* Floating Galleon Boat */
     .galleon-container {
       cursor: pointer;
-      margin: 15px 0 25px;
+      margin: 20px 0;
       position: relative;
       animation: floatBoat 4s ease-in-out infinite;
       transition: transform 0.3s ease, filter 0.3s ease;
     }
 
     .galleon-container:hover {
-      filter: drop-shadow(0 0 20px var(--gold-accent));
+      filter: drop-shadow(0 0 25px var(--gold-accent));
+      transform: scale(1.05);
     }
 
     .galleon-img {
-      width: clamp(180px, 28vw, 320px);
+      width: clamp(200px, 30vw, 340px);
       height: auto;
       display: block;
-      filter: sepia(0.2) contrast(1.1);
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));
     }
 
     .click-prompt {
       font-family: 'Cinzel', serif;
       color: var(--gold-hover);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       letter-spacing: 3px;
       text-transform: uppercase;
-      margin-top: 5px;
+      margin-top: 10px;
       animation: pulseText 2s infinite;
     }
 
     .welcome-message-box {
-      max-width: 700px;
-      background: rgba(28, 15, 10, 0.75);
+      max-width: 750px;
+      background: rgba(18, 9, 7, 0.85);
       border: 1px solid var(--gold-accent);
-      padding: 20px 25px;
+      padding: 22px 28px;
       border-radius: 4px;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      animation: fadeInUp 1.2s ease;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9);
     }
 
     .welcome-message-box p {
       color: #e5dacb;
-      font-size: 1rem;
+      font-size: 1.05rem;
       line-height: 1.6;
       font-style: italic;
     }
 
     /* ==========================================================================
-       3. MAIN INTERFACE CONTENT & HEADER
+       3. MAIN INTERFACE & BACKGROUND GIF
        ========================================================================== */
     .main-bg-gif {
       position: fixed;
@@ -176,19 +171,19 @@
       background-image: url('https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/spanish-empire-boat.gif');
       background-size: cover;
       background-position: center;
-      opacity: 0.22;
+      opacity: 0.25;
       z-index: -3;
       filter: sepia(0.6) contrast(1.1);
     }
 
     header {
       text-align: center;
-      padding: 50px 20px 20px;
+      padding: 60px 20px 25px;
     }
 
     .main-subtitle {
       font-family: 'Cinzel', serif;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       letter-spacing: 4px;
       color: var(--gold-accent);
       text-transform: uppercase;
@@ -196,24 +191,24 @@
 
     h1.main-title {
       font-family: 'Cinzel', serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
       color: #f4ecd8;
       font-weight: 900;
       text-transform: uppercase;
-      margin-top: 5px;
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+      margin-top: 8px;
+      text-shadow: 2px 2px 12px rgba(0,0,0,0.95);
     }
 
     .header-divider {
-      width: 140px;
+      width: 180px;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
-      margin: 15px auto 20px;
+      margin: 18px auto 25px;
     }
 
-    /* Navigation / Sections Layout */
+    /* Layout & Cards */
     main {
-      max-width: 1150px;
+      max-width: 1200px;
       margin: 20px auto 80px;
       padding: 0 20px;
     }
@@ -221,79 +216,83 @@
     .section-title {
       font-family: 'Cinzel', serif;
       color: var(--gold-accent);
-      font-size: 1.5rem;
-      margin: 40px 0 20px;
+      font-size: 1.6rem;
+      margin: 45px 0 25px;
       text-align: center;
       border-bottom: 1px solid rgba(212,175,55,0.3);
-      padding-bottom: 8px;
+      padding-bottom: 10px;
       letter-spacing: 2px;
     }
 
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
     }
 
     .archive-card {
-      background: linear-gradient(145deg, #f4ecd8, #e0d4be);
+      background: linear-gradient(145deg, #f5edda, #ded2bb);
       border: 2px solid var(--gold-accent);
       border-radius: 4px;
-      padding: 25px;
+      padding: 28px;
       cursor: pointer;
       position: relative;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 0 15px rgba(158,61,35,0.15);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.85), inset 0 0 15px rgba(158,61,35,0.12);
       transition: all 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .archive-card:hover {
-      transform: translateY(-7px) scale(1.02);
-      box-shadow: 0 15px 35px rgba(212,175,55,0.35);
+      transform: translateY(-8px);
+      box-shadow: 0 18px 40px rgba(212,175,55,0.35);
       border-color: var(--gold-hover);
     }
 
     .card-tag {
       font-family: 'Cinzel', serif;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 700;
       color: var(--terracotta);
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 8px;
-      display: block;
+      margin-bottom: 10px;
     }
 
     .card-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: var(--deep-mahogany);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       line-height: 1.3;
     }
 
     .card-snippet {
-      font-size: 0.92rem;
-      color: #4a3e3d;
-      line-height: 1.5;
+      font-size: 0.96rem;
+      color: #3d3331;
+      line-height: 1.6;
+      margin-bottom: 20px;
     }
 
     .card-footer {
-      margin-top: 15px;
       font-family: 'Cinzel', serif;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--terracotta);
       font-weight: 700;
+      border-top: 1px solid rgba(158,61,35,0.2);
+      padding-top: 12px;
     }
 
     /* ==========================================================================
-       4. MODAL POPUPS & CAROUSEL
+       4. MODAL POPUPS & AUTO CAROUSEL
        ========================================================================== */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(12, 6, 4, 0.88);
-      backdrop-filter: blur(5px);
+      background: rgba(10, 5, 3, 0.9);
+      backdrop-filter: blur(6px);
       z-index: 1000;
       display: flex;
       justify-content: center;
@@ -312,20 +311,20 @@
     .modal-content {
       background: #f4ecd8;
       border: 3px solid var(--gold-accent);
-      max-width: 880px;
+      max-width: 900px;
       width: 100%;
-      max-height: 85vh;
+      max-height: 88vh;
       overflow-y: auto;
-      padding: 35px;
+      padding: 38px;
       border-radius: 4px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.95);
       position: relative;
     }
 
     .close-btn {
       position: absolute;
-      top: 15px; right: 20px;
-      font-size: 2rem;
+      top: 15px; right: 22px;
+      font-size: 2.2rem;
       background: none; border: none;
       color: var(--deep-mahogany);
       cursor: pointer;
@@ -334,44 +333,44 @@
 
     .modal-header {
       border-bottom: 2px dashed rgba(158,61,35,0.3);
-      padding-bottom: 12px;
-      margin-bottom: 18px;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
     }
 
     .modal-subtitle {
       font-family: 'Cinzel', serif;
       color: var(--terracotta);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
     .modal-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.7rem;
+      font-size: 1.8rem;
       color: var(--deep-mahogany);
     }
 
     .modal-body {
-      font-size: 0.98rem;
-      line-height: 1.7;
+      font-size: 1rem;
+      line-height: 1.75;
       color: var(--text-dark);
     }
 
     .modal-body ul {
-      margin: 12px 0 18px 22px;
+      margin: 14px 0 20px 24px;
     }
 
     .modal-body li {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    /* Carousel Component */
+    /* Carousel */
     .carousel-container {
       position: relative;
       margin-top: 25px;
       border: 2px solid var(--gold-accent);
-      background: #1c0f0a;
+      background: #120907;
       border-radius: 4px;
       overflow: hidden;
     }
@@ -390,18 +389,18 @@
 
     .carousel-slide img {
       width: 100%;
-      max-height: 380px;
+      max-height: 400px;
       object-fit: contain;
       background: #000;
       cursor: zoom-in;
     }
 
     .carousel-caption {
-      background: rgba(28, 15, 10, 0.9);
+      background: rgba(18, 9, 7, 0.92);
       color: var(--gold-hover);
-      padding: 8px 12px;
+      padding: 10px 14px;
       font-family: 'Cinzel', serif;
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       letter-spacing: 1px;
     }
 
@@ -409,14 +408,13 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(43, 24, 16, 0.8);
+      background: rgba(30, 15, 10, 0.85);
       color: var(--gold-accent);
       border: 1px solid var(--gold-accent);
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       padding: 8px 14px;
       cursor: pointer;
       z-index: 10;
-      transition: background 0.2s;
     }
 
     .carousel-btn:hover {
@@ -427,7 +425,7 @@
     .prev-btn { left: 10px; }
     .next-btn { right: 10px; }
 
-    /* Lightbox Modal for Zooming Images */
+    /* Lightbox Modal */
     #lightbox-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -441,30 +439,20 @@
     }
 
     #lightbox-img {
-      max-width: 90%;
-      max-height: 90%;
+      max-width: 92%;
+      max-height: 92%;
       border: 2px solid var(--gold-accent);
     }
 
-    /* ANIMATIONS */
+    /* Keyframe Animations */
     @keyframes floatBoat {
       0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(1.5deg); }
+      50% { transform: translateY(-14px) rotate(1.5deg); }
     }
 
     @keyframes pulseText {
       0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; text-shadow: 0 0 8px var(--gold-accent); }
-    }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      50% { opacity: 1; text-shadow: 0 0 10px var(--gold-accent); }
     }
   </style>
 </head>
@@ -476,13 +464,13 @@
   <div id="cover-screen">
     <div class="cover-bg"></div>
     
-    <div class="cover-title-group">
+    <div>
       <div class="cover-subtitle">San Lázaro Expedition • 1521</div>
       <h1 class="cover-main-title">The Pigafetta Chronicles</h1>
     </div>
 
     <div class="galleon-container" onclick="enterArchive()">
-      <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Screenshot_2026-09-13_204118-removebg-preview.png" alt="Spanish Armada Galleon" class="galleon-img">
+      <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Screenshot_2026-09-13_204118-removebg-preview.png" alt="Spanish Galleon" class="galleon-img">
       <div class="click-prompt">⚓ Click Galleon to Embark ⚓</div>
     </div>
 
@@ -506,23 +494,29 @@
     <div class="grid-container">
       
       <div class="archive-card" onclick="openModal('modal-geo')">
-        <span class="card-tag">Guide A & B • Geographic Record</span>
-        <h3 class="card-title">San Lázaro Archipelago & Waypoints</h3>
-        <p class="card-snippet">Detailed route from Zamal (Samar), Humunu (Homonhon), Zuloan (Suluan), Cenalo (Leyte), to Mazaua (Limasawa)...</p>
+        <div>
+          <span class="card-tag">Guide A & B • Geographic Itinerary</span>
+          <h3 class="card-title">San Lázaro Archipelago & Homonhon Route</h3>
+          <p class="card-snippet">Discovered March 17, 1521 (Sunday of St. Lazarus) at 10° N latitude and 161° from the Tordesillas Line. Explores Samar (Zamal), Homonhon (Humunu - Aguada de los Buenos Indicios), and early waypoints.</p>
+        </div>
         <div class="card-footer">Examine Route Log &rarr;</div>
       </div>
 
       <div class="archive-card" onclick="openModal('modal-limasawa')">
-        <span class="card-tag">Guide B • Pre-Colonial Hubs</span>
-        <h3 class="card-title">Limasawa, Camotes & Cebu Waypoints</h3>
-        <p class="card-snippet">Coordinate records ($9\frac{2}{3}^\circ\text{ N}$), distances (138.9 km from Homonhon), and passage through Canigao, Baybay, and Himokilan...</p>
+        <div>
+          <span class="card-tag">Guide B • Pre-Colonial Navigation</span>
+          <h3 class="card-title">Limasawa (Mazaua) to Sugbu (Cebu) Passage</h3>
+          <p class="card-snippet">Exact coordinates at 9° 40' N (9⅔° N) latitude, 138.9 km from Homonhon. Documents passages through Leyte, Bohol, Canigao, Himokilan (Gatighan - 111.12 km from Limasawa), and Camotes Islands.</p>
+        </div>
         <div class="card-footer">Examine Waypoint Data &rarr;</div>
       </div>
 
       <div class="archive-card" onclick="openModal('modal-pigafetta-survey')">
-        <span class="card-tag">Guide A & C • Historical Value</span>
-        <h3 class="card-title">Pigafetta as On-The-Ground Surveyor</h3>
-        <p class="card-snippet">How Pigafetta's exact notes led 1982 researchers back to Homonhon's lost freshwater springs after 450 years...</p>
+        <div>
+          <span class="card-tag">Guide A & C • Historical Value</span>
+          <h3 class="card-title">Pigafetta as On-The-Ground Surveyor</h3>
+          <p class="card-snippet">Analyzing Antonio Pigafetta's exact natural surveys—from flora, fauna, and gold deposits to the 1982 scientific re-discovery of Homonhon's lost freshwater springs after 450 years.</p>
+        </div>
         <div class="card-footer">Examine Surveyor Log &rarr;</div>
       </div>
 
@@ -532,34 +526,42 @@
     <div class="grid-container">
 
       <div class="archive-card" onclick="openModal('modal-encounters')">
-        <span class="card-tag">Guide A • First Encounters</span>
-        <h3 class="card-title">Suluan & Homonhon Contact</h3>
-        <p class="card-snippet">Gift exchanges (red caps, mirrors vs. Uraca palm wine, coconuts), cannon displays, and native coconut brewing accounts...</p>
+        <div>
+          <span class="card-tag">Guide A • First Contact</span>
+          <h3 class="card-title">Suluan Island & Homonhon Interactions</h3>
+          <p class="card-snippet">First local encounters on Homonhon's shores. Gift exchanges of red caps, mirrors, and bells for Uraca (palm wine), coconuts, and live poultry, along with cannon displays and botanical notes.</p>
+        </div>
         <div class="card-footer">Examine Contact Records &rarr;</div>
       </div>
 
       <div class="archive-card" onclick="openModal('modal-blood-compact')">
-        <span class="card-tag">Guide B • Political Networks</span>
-        <h3 class="card-title">Rajah Colambu, Sanduguan & First Mass</h3>
-        <p class="card-snippet">Alliances between Rajah Colambu (Limasawa) and Rajah Siaiu (Butuan), the blood compact, and Easter Sunday Mass in 1521...</p>
+        <div>
+          <span class="card-tag">Guide B • Pre-Colonial Alliances</span>
+          <h3 class="card-title">Rajah Colambu, Sanduguan & First Mass</h3>
+          <p class="card-snippet">Diplomatic blood compact between Magellan and Rajah Colambu of Limasawa, meeting Rajah Siaiu of Butuan/Calaghan, and the Easter Sunday Mass held on Limasawa Island in 1521.</p>
+        </div>
         <div class="card-footer">Examine Alliance Log &rarr;</div>
       </div>
 
       <div class="archive-card" onclick="openModal('modal-tactics')">
-        <span class="card-tag">Guide C • Critical Analysis</span>
-        <h3 class="card-title">Deconstructing Early Colonial Tactics</h3>
-        <p class="card-snippet">Analyzing how Spanish "friendliness" and mock battles were used as deliberate soft-power strategies...</p>
+        <div>
+          <span class="card-tag">Guide C • Critical Analysis</span>
+          <h3 class="card-title">Deconstructing Early Colonial Tactics</h3>
+          <p class="card-snippet">Analyzing Spanish diplomatic strategies, soft-power gift exchanges, military demonstrations, and local political motivations during early European-Filipino encounters.</p>
+        </div>
         <div class="card-footer">Examine Historical Analysis &rarr;</div>
       </div>
 
     </div>
 
-    <h2 class="section-title">Part III: Primary Sources</h2>
+    <h2 class="section-title">Part III: Primary Sources & References</h2>
     <div class="grid-container" style="grid-template-columns: 1fr;">
       <div class="archive-card" onclick="openModal('modal-source')">
-        <span class="card-tag">Guide D • Citation</span>
-        <h3 class="card-title">Dr. Danilo Madrid Gerona & Philippine Diary Project</h3>
-        <p class="card-snippet">Primary archival research from Spanish and Portuguese repositories ("Magellan: The World of the Visayas")...</p>
+        <div>
+          <span class="card-tag">Guide D • Citation</span>
+          <h3 class="card-title">Dr. Danilo Madrid Gerona & Philippine Diary Project</h3>
+          <p class="card-snippet">Primary archival records compiled from original Spanish and Portuguese manuscript repositories, including Dr. Danilo Madrid Gerona's "Magellan: The World of the Visayas" and official 1521 diary entries.</p>
+        </div>
         <div class="card-footer">View Credentials & Links &rarr;</div>
       </div>
     </div>
@@ -574,18 +576,18 @@
       </div>
       <div class="modal-body">
         <ul>
-          <li><strong>San Lázaro Archipelago (Archipiélago de San Lázaro):</strong> Named after the Sunday of St. Lazarus (March 17, 1521). Coordinates recorded at $10^\circ\text{ N}$ latitude, $161^\circ$ from the Tordesillas Line of Demarcation.</li>
-          <li><strong>Samar (Zamal):</strong> Spotted March 16 as "high land", 300 leagues (1,666.8 km) from Mariana Islands.</li>
+          <li><strong>San Lázaro Archipelago (Archipiélago de San Lázaro):</strong> Discovered on the Sunday of St. Lazarus (March 17, 1521). Positioned at 10° N latitude and 161° from the Tordesillas Line of Demarcation.</li>
+          <li><strong>Samar (Zamal):</strong> Spotted March 16 as "high land", 300 leagues (1,666.8 km) from Mariana Islands (Islas de los Ladrones).</li>
           <li><strong>Homonhon (Humunu):</strong> Uninhabited landing spot on March 17. Named <em>Aguada de los Buenos Indicios</em> ("Watering Place of Good Signs") due to freshwater springs and gold traces.</li>
-          <li><strong>Suluan (Zuloan):</strong> Home of the first local inhabitants encountered by the fleet.</li>
-          <li><strong>Southwestern Course Waypoints:</strong> Leyte (Cenalo/Ceylon), Hinunangan (Hiunanghan - mistaken as an island), Hibusong (Ibusson), and San Juan (Abarien).</li>
+          <li><strong>Suluan (Zuloan):</strong> Inhabited island where the fleet made its first contact with local inhabitants.</li>
+          <li><strong>Southwestern Landmarks:</strong> Leyte (Cenalo/Ceylon), Hinunangan City (Hiunanghan), Hibusong (Ibusson), and Municipality of San Juan (Abarien).</li>
         </ul>
 
         <div class="carousel-container" id="carousel-geo">
           <div class="carousel-slides">
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/SDFDG.png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Archival Route Chart & Homonhon Location (SDFDG.png)</div>
+              <div class="carousel-caption">Archival Route Chart & Homonhon Coordinates (SDFDG.png)</div>
             </div>
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Homonhon%20Island_%20A%20journey%20through%20history%20and%20nature%20in%20Eastern%20Samar.png" onclick="openLightbox(this.src)">
@@ -607,26 +609,26 @@
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('modal-limasawa')">&times;</button>
       <div class="modal-header">
-        <span class="modal-subtitle">Guide B • Limasawa & Camotes Waypoints</span>
+        <span class="modal-subtitle">Guide B • Limasawa & Pre-Colonial Waypoints</span>
         <h2 class="modal-title">Limasawa (Mazaua) to Cebu Passage</h2>
       </div>
       <div class="modal-body">
         <ul>
-          <li><strong>Limasawa (Mazaua):</strong> Spotted March 27 via night fires. Situated at $9\frac{2}{3}^\circ\text{ N}$ latitude, 25 leagues (138.9 km) from Homonhon. Hunting ground of Rajah Colambu and site of the First Mass.</li>
-          <li><strong>Intervening Waypoints to Cebu:</strong> Canigao (Canigan), Baybay (coastal city mistaken as an island), and Himokilan (Gatighan - 111.12 km from Limasawa).</li>
-          <li><strong>Fauna documented at Himokilan:</strong> Eagle-sized bats (tasted like chicken), black birds with goose-sized eggs, doves, and parrots.</li>
-          <li><strong>Camotes Islands:</strong> Polo, Pacijan (Ticobon), and Ponson (Pozon) where the fleet waited for Rajah Colambu's boats.</li>
+          <li><strong>Limasawa Island (Mazaua):</strong> Spotted March 27 via night fires; anchored March 28. Coordinates recorded at 9° 40' N (9⅔° N) latitude, 162° from the Demarcation Line, located 25 leagues (138.9 km) from Homonhon.</li>
+          <li><strong>Intervening Passage:</strong> Passage through Leyte, Bohol, Canigao (Canigan), Baybay City (coastal city mistaken as an island), and Himokilan Island (Gatighan - 111.12 km from Limasawa).</li>
+          <li><strong>Wildlife Documented at Himokilan:</strong> Eagle-sized bats, large black birds with goose-sized eggs, doves, and parrots.</li>
+          <li><strong>Camotes Islands:</strong> Polo, Pacijan (Ticobon), and Ponson (Pozon) where the fleet waited for Rajah Colambu's fleet before proceeding to Cebu.</li>
         </ul>
 
         <div class="carousel-container" id="carousel-limasawa">
           <div class="carousel-slides">
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Punta%20Arenas_%20following%20the%20Ferdinand%20Magellan%20route.png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Magellan Route & Strait Navigation Chart</div>
+              <div class="carousel-caption">Magellan Expedition Route Chart</div>
             </div>
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Cebu%20(Sugbu).png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Pre-Colonial Sugbu (Cebu) Map</div>
+              <div class="carousel-caption">Pre-Colonial Sugbu (Cebu) Trade Hub</div>
             </div>
           </div>
           <button class="carousel-btn prev-btn" onclick="moveCarousel('carousel-limasawa', -1)">&#10094;</button>
@@ -644,21 +646,21 @@
         <h2 class="modal-title">Pigafetta’s Log & 1982 Spring Rediscovery</h2>
       </div>
       <div class="modal-body">
-        <p>Pigafetta recorded specific natural resources: freshwater springs, gold, white coral, and palm trees. In 1982, researchers cross-referenced his descriptions to locate the exact freshwater springs at Homonhon lost for over 450 years.</p>
+        <p>Pigafetta provided precise geographical, botanical, and resource notes—recording gold traces, white coral, palm wine production, and freshwater springs. In 1982, modern researchers used Pigafetta's exact directional notes to relocate Homonhon's original freshwater springs (Aguada de los Buenos Indicios) lost for over 450 years.</p>
 
         <div class="carousel-container" id="carousel-pigafetta">
           <div class="carousel-slides">
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20Diary%20%E2%80%93%20The%20Philippine%20Islands%2C%201493%20%E2%80%93%20PFPLCP%20(1).png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Pigafetta Manuscript Leaf 1</div>
+              <div class="carousel-caption">Pigafetta Primary Manuscript Page 1</div>
             </div>
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20Diary%20%E2%80%93%20The%20Philippine%20Islands%2C%201493%20%E2%80%93%20PFPLCP.png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Pigafetta Manuscript Leaf 2</div>
+              <div class="carousel-caption">Pigafetta Primary Manuscript Page 2</div>
             </div>
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Antonio%20Pigafetta%20_%20PDF.png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Archival PDF Manuscript Reference</div>
+              <div class="carousel-caption">Archival PDF Reference</div>
             </div>
           </div>
           <button class="carousel-btn prev-btn" onclick="moveCarousel('carousel-pigafetta', -1)">&#10094;</button>
@@ -672,25 +674,26 @@
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('modal-encounters')">&times;</button>
       <div class="modal-header">
-        <span class="modal-subtitle">Guide A • Suluan Contact Details</span>
-        <h2 class="modal-title">First Encounters at Homonhon</h2>
+        <span class="modal-subtitle">Guide A • First Encounters</span>
+        <h2 class="modal-title">Suluan & Homonhon Contact</h2>
       </div>
       <div class="modal-body">
         <ul>
-          <li>Locals from Suluan met the fleet at Homonhon. Magellan presented red caps, mirrors, combs, bells, and ivory objects.</li>
-          <li>Locals presented <em>Uraca</em> (palm wine), bananas, and coconuts. Pigafetta noted detailed accounts of native coconut harvesting.</li>
-          <li>Locals returned 4 days later with live chickens, oranges, and additional coconuts.</li>
+          <li>Inhabitants from Suluan met the expedition on Homonhon's shore with a welcoming demeanor.</li>
+          <li>Magellan presented red caps, mirrors, combs, bells, fabrics, and ivory trinkets.</li>
+          <li>Locals responded with <em>Uraca</em> (palm wine), bananas, and coconuts. Pigafetta documented detailed accounts of coconut harvesting and local spice growth.</li>
+          <li>Locals returned 4 days later with live poultry, oranges, and coconuts.</li>
         </ul>
 
         <div class="carousel-container" id="carousel-encounters">
           <div class="carousel-slides">
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/27%20Avril%201521%20%E2%80%93%20Fernand%20de%20Magellan%20navigateur%20et%20explorateur%20portugais_.png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Fernand de Magellan Record</div>
+              <div class="carousel-caption">Magellan Navigation Record</div>
             </div>
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Juan%20Luna%20-%20Paintings%20Collection.png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Juan Luna Historic Collection</div>
+              <div class="carousel-caption">Historical Visual Depiction (Juan Luna Collection)</div>
             </div>
           </div>
           <button class="carousel-btn prev-btn" onclick="moveCarousel('carousel-encounters', -1)">&#10094;</button>
@@ -704,11 +707,11 @@
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('modal-blood-compact')">&times;</button>
       <div class="modal-header">
-        <span class="modal-subtitle">Guide B • Political Networks</span>
-        <h2 class="modal-title">Sanduguan & Pre-Colonial Alliances</h2>
+        <span class="modal-subtitle">Guide B • Pre-Colonial Alliances</span>
+        <h2 class="modal-title">Sanduguan & Pre-Colonial Networks</h2>
       </div>
       <div class="modal-body">
-        <p>Magellan met Rajah Colambu of Limasawa and his brother Rajah Siaiu of Butuan. The sides sealed a <strong>blood compact (Sanduguan)</strong>. Magellan declined a large gold bar offer, establishing mutual trust.</p>
+        <p>Magellan established contact with Rajah Colambu of Limasawa and his brother Rajah Siaiu of Butuan/Calaghan through the Malay interpreter Enrique of Malacca. Magellan and Rajah Colambu sealed a <strong>blood compact (Sanduguan)</strong>. Magellan declined a large bar of gold offered by Rajah Colambu to emphasize alliance over commercial greed, leading to the Easter Sunday Mass in 1521.</p>
 
         <div class="carousel-container" id="carousel-compact">
           <div class="carousel-slides">
@@ -718,7 +721,7 @@
             </div>
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Magellan%20toasts%20with%20Humabon%20_%20Philippine%20history%20pre%20spanish%20period_.png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Magellan & Native Leaders Encounter</div>
+              <div class="carousel-caption">Magellan Toasting with Local Leaders</div>
             </div>
           </div>
           <button class="carousel-btn prev-btn" onclick="moveCarousel('carousel-compact', -1)">&#10094;</button>
@@ -736,13 +739,13 @@
         <h2 class="modal-title">Deconstructing Early Colonial Tactics</h2>
       </div>
       <div class="modal-body">
-        <p>Spanish gift-giving and mock armored soldier battles were paired together as soft-power intimidation and friendship strategies.</p>
+        <p>Spanish gift-giving and cannon demonstrations were utilized as diplomatic soft-power strategies. Meanwhile, local Rajahs used alliance building with foreign naval fleets to reinforce their regional standing and trade networks.</p>
 
         <div class="carousel-container" id="carousel-tactics">
           <div class="carousel-slides">
             <div class="carousel-slide">
               <img src="https://raw.githubusercontent.com/PatrickCabigan/PHILHIS-WEBSITE-G04/refs/heads/main/Why%20Filipinos%20Should%20Read_%20%E2%80%98To%20Be%20Poor%20and%20Obscure_%20The%20Spiritual_.png" onclick="openLightbox(this.src)">
-              <div class="carousel-caption">Critical Analysis Source Reading</div>
+              <div class="carousel-caption">Critical Historiography Reading</div>
             </div>
           </div>
           <button class="carousel-btn prev-btn" onclick="moveCarousel('carousel-tactics', -1)">&#10094;</button>
@@ -756,15 +759,15 @@
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('modal-source')">&times;</button>
       <div class="modal-header">
-        <span class="modal-subtitle">Guide D • Primary Citations</span>
-        <h2 class="modal-title">Sources & References</h2>
+        <span class="modal-subtitle">Guide D • Citation</span>
+        <h2 class="modal-title">Primary Sources & References</h2>
       </div>
       <div class="modal-body">
         <p><strong>1. Danilo Madrid Gerona, PhD:</strong> <em>"Magellan: The World of the Visayas"</em> (dateline-ibalon.com).</p>
-        <p><strong>2. Philippine Diary Project Primary Transcripts:</strong></p>
+        <p style="margin-top: 10px;"><strong>2. Philippine Diary Project (March 16 & April 7, 1521 Transcripts):</strong></p>
         <ul>
-          <li><a href="https://philippinediaryproject.com/1521/03/16/16th-of-march-1521-2/" target="_blank" style="color: var(--terracotta);">March 16, 1521 Entry &rarr;</a></li>
-          <li><a href="https://philippinediaryproject.com/1521/04/07/7th-of-april-1521/#google_vignette" target="_blank" style="color: var(--terracotta);">April 7, 1521 Entry &rarr;</a></li>
+          <li><a href="https://philippinediaryproject.com/1521/03/16/16th-of-march-1521-2/" target="_blank" style="color: var(--terracotta);">March 16, 1521 Diary Entry &rarr;</a></li>
+          <li><a href="https://philippinediaryproject.com/1521/04/07/7th-of-april-1521/#google_vignette" target="_blank" style="color: var(--terracotta);">April 7, 1521 Diary Entry &rarr;</a></li>
         </ul>
       </div>
     </div>
@@ -775,9 +778,13 @@
   </div>
 
   <script>
-    // Transition from Cover Screen to Main Interface
+    // Transition from Cover Screen to Main Website
     function enterArchive() {
-      document.getElementById('cover-screen').classList.add('hidden');
+      const cover = document.getElementById('cover-screen');
+      cover.style.opacity = '0';
+      setTimeout(() => {
+        cover.classList.add('hidden');
+      }, 700);
     }
 
     // Modal controls
@@ -795,11 +802,12 @@
       });
     });
 
-    // Auto-Playing Carousel State & Functions
+    // Auto-Playing Carousel Logic
     const carouselStates = {};
 
     function moveCarousel(carouselId, direction) {
       const container = document.getElementById(carouselId);
+      if (!container) return;
       const slides = container.querySelector('.carousel-slides');
       const totalSlides = container.querySelectorAll('.carousel-slide').length;
 
@@ -840,7 +848,7 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 45; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
